@@ -9,7 +9,10 @@ async def wait_n(n: int, max_delay: int):
     wait_n should return the list of all the delays'''
     delays = []
     i = 0
+    tasks = []
     for i in range(n):
-        value = await wait_random(max_delay)
-        delays.append(value)
+        tasks.append(wait_random(max_delay))
+
+    for task in asyncio.as_completed(tasks):
+        delays.append(await task)
     return delays
