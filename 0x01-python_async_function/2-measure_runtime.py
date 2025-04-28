@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''Function measure_time '''
-import asyncio
+#import asyncio
 import time
 
 
