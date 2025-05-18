@@ -29,12 +29,11 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch.object(
                 GithubOrgClient,
                 'org',
-                return_value={repos_url:
-                              'https://api.github.com/users/google/repos'}
+                return_value='https://api.github.com/users/google/repos'
         ) as mock_org:
-            result = GithubOrgClient('google')._public_repos-url
+            result = GithubOrgClient('google')._public_repos_url
             self.assertEqual(
-                ressult, 'https://api.github.com/users/google/repos',
+                result, 'https://api.github.com/users/google/repos',
             )
 
     @patch('client.get_json')
@@ -52,5 +51,4 @@ class TestGithubOrgClient(unittest.TestCase):
             result = GithubOrgClient('abc').public_repos()
             self.assertEqual(result, ['repo1', 'repo2'])
         mock_get_json.assert_called_once_with(
-            'https://api.github.com/users/abc/repos'
-        )
+            'https://api.github.com/users/abc/repos')
