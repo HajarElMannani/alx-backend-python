@@ -14,7 +14,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ('google', {'login': 'google'}),
         ('abc', {'login': 'abc'})
     ])
-    def test_org(self, org_name, expected, mock_get_json):
+    def test_org(self, mock_get_json, org_name, expected):
         '''test the org method'''
         mock_get_json.return_value = expected
         thing = GithubOrgClient(org_name)
