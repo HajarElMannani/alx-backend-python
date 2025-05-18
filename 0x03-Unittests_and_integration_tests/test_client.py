@@ -36,3 +36,13 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(
                 ressult, 'https://api.github.com/users/google/repos',
             )
+
+    @patch('client.get_json')
+    def test_public_repos(self, license, mock_get_json):
+        '''test the method public_repos'''
+        with patch.object(GithubOrgClient,
+                          'public_repos',
+                          return_value=["repo1"]) as mock_method:
+            result = GithubOrgClient().public_repos()
+            self.assertEqual(result, "repo1")
+        mock_get_json.assert_called_once()
