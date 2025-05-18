@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+'''client.GithubOrgClient class test'''
+from parameterized import parameterized
+import client
+from client import GithubOrgClient
+from unittest.mock import patch
+import unittest
+
+
+class TestGithubOrgClient(unittest.TestCase):
+    '''Test class GithubOrgClient'''
+    @parameterized.expand([
+        ('google', {'login': 'google'}),
+        ('abc', {'login': 'abc'})
+    ])
+    @patch('client.get_json')
+    def test_org(self, org_name, expected, mock_get_json):
+        '''test the org method'''
+        mock_get_json.return_value = expected
+        thing = GithubOrgClient(org_name)
+        result = thing.org()
+        self.assertEqual(result, expected)
+        mock_get_json.assert_called_once_with(
+            "https://api.github.com/orgs/{}".format(org_name)
+        )
