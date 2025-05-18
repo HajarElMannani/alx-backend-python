@@ -24,16 +24,15 @@ class TestGithubOrgClient(unittest.TestCase):
             "https://api.github.com/orgs/{}".format(org_name)
         )
 
-    def test_public_repos_url():
+    def test_public_repos_url(self):
         '''test GithubOrgClient._public_repos_url'''
-        with patch(
-                "client.GithubOrgClient.org",
-                new_callable=PropertyMock,
-                ) as mock_org:
-            mock_org.return_value = {
-                'repos_url': 'https://api.github.com/users/google/repos',
-            }
+        with patch.object(
+                GithubOrgClient,
+                'org',
+                return_value={repos_url:
+                              'https://api.github.com/users/google/repos'}
+        ) as mock_org:
+            result = GithubOrgClient('google')._public_repos-url
             self.assertEqual(
-                GithubOrgClient('googl')._public_repos-url,
-                'https://api.github.com/users/google/repos',
+                ressult, 'https://api.github.com/users/google/repos',
             )
