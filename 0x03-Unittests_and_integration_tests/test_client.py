@@ -9,11 +9,11 @@ import unittest
 
 class TestGithubOrgClient(unittest.TestCase):
     '''Test class GithubOrgClient'''
+    @patch('client.get_json')
     @parameterized.expand([
         ('google', {'login': 'google'}),
         ('abc', {'login': 'abc'})
     ])
-    @patch('client.get_json')
     def test_org(self, org_name, expected, mock_get_json):
         '''test the org method'''
         mock_get_json.return_value = expected
