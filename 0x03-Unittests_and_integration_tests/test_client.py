@@ -3,7 +3,7 @@
 from parameterized import parameterized
 import client
 from client import GithubOrgClient
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 import unittest
 
 
@@ -76,14 +76,18 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             'https://api.github.com/users/x': cls.org_payload
         }
 
-    def get_payload(url):
-        if url in payload_route:
-            return Mock(**{'json.return_value': payload_route[url]})
-        return HTTPError
+        def get_payload(url):
+            if url in payload_route:
+                return Mock(**{'json.return_value': payload_route[url]})
+            return HTTPError
+        cls.get_patcher = patch('requests.get', side_effect=get_payload)
+        cls.get_patcher.start()
 
     @classmethod
     def tearDownClass(cls) -> None:
         '''tear down the class'''
         cls.get_patcher.stop()
+
+        
 if __name__ == "__main__":
     unittest.main()
