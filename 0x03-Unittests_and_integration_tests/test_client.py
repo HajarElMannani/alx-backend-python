@@ -49,7 +49,7 @@ class TestGithubOrgClient(unittest.TestCase):
         res = result.public_repos() 
         self.assertEqual(res, ['repo1', 'repo2'])
         mock_get_json.assert_any_call(
- 0           'https://api.github.com/users/x/repos')
+            'https://api.github.com/users/x/repos')
         self.assertEqual(mock_get_json.call_count, 1)
 
     @parameterized.expand([
