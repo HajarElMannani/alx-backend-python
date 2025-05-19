@@ -61,10 +61,11 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+
 @parameterized_class([{'org_payload': fixtures.org_payload,
                        'repos_payload': fixtures.repos_payload,
                        'expected_repos': fixtures.expected_repos,
-                       'apache2_repos':fixtures.apache2_repos
+                       'apache2_repos': fixtures.apache2_repos
                        }])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     '''Class that tests Integration GithubOrgClien'''
@@ -88,6 +89,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         '''tear down the class'''
         cls.get_patcher.stop()
 
-        
+
 if __name__ == "__main__":
     unittest.main()
