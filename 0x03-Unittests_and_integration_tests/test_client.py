@@ -2,7 +2,7 @@
 '''client GithubOrgClient class test'''
 from parameterized import parameterized
 import client
-from client import GithubOrgClient, get_json
+from client import GithubOrgClient
 from unittest.mock import patch
 import unittest
 
