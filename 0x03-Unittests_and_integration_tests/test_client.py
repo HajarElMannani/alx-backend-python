@@ -46,7 +46,7 @@ class TestGithubOrgClient(unittest.TestCase):
                     'https://api.github.com/users/x/repos'}
         mock_get_json.side_effect = [mock_org, test_payload]
         result = GithubOrgClient('abc')
-        res = result.public_repos() 
+        res = result.public_repos()
         self.assertEqual(res, ['repo1', 'repo2'])
         mock_get_json.assert_any_call(
             'https://api.github.com/users/x/repos')
@@ -60,6 +60,7 @@ class TestGithubOrgClient(unittest.TestCase):
         '''test method has_license'''
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
-        
+
+
 if __name__ == "__main__":
     unittest.main()
