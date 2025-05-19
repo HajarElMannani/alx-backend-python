@@ -28,7 +28,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos_url(self):
         '''test GithubOrgClient._public_repos_url'''
         mock_org = {'repos_url':
-                    'https://api.github.com/users/x/repos'}
+                    'https://api.github.com/orgs/x/repos'}
         with patch(
                 'client.get_json',
                 return_value=mock_org):
@@ -45,14 +45,13 @@ class TestGithubOrgClient(unittest.TestCase):
             {'name': 'repo2', 'license': {'key': 'AFL-3.0'}}
         ]
         mock_org = {'repos_url':
-                    'https://api.github.com/users/x/repos'}
+                    'https://api.github.com/orgs/x/repos'}
         mock_get_json.side_effect = [mock_org, test_payload]
         result = GithubOrgClient('abc')
         res = result.public_repos()
         self.assertEqual(res, ['repo1', 'repo2'])
-        mock_get_json.assert_any_call(
-            'https://api.github.com/users/x/repos')
-        self.assertEqual(mock_get_json.call_count, 1)
+        mock_get_json.assert_call_once_with(
+            'https://api.github.com/orgs/x/repos')
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
@@ -75,8 +74,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def setUpClass(cls) -> None:
         '''setting up the class'''
         payload_route = {
-            'https://api.github.com/users/x/repos': cls.repos_payload,
-            'https://api.github.com/users/x': cls.org_payload,
+            'https://api.github.com/orgs/x/repos': cls.repos_payload,
+            'https://api.github.com/orgs/x': cls.org_payload,
         }
 
         def get_payload(url):
@@ -88,7 +87,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     def test_public_repos(self) -> None:
         '''test for GithubOrgClient.public_repos'''
-        self.asserEqual(GithubOrgClient('x').public_repos(),
+        self.assertEqual(GithubOrgClient('x').public_repos(),
                         self.expected_repos,)
 
     def test_public_repos_with_license(self) -> None:
