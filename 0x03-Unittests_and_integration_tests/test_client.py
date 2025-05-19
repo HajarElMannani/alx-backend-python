@@ -6,7 +6,8 @@ import client
 from client import GithubOrgClient
 from unittest.mock import patch, Mock
 import unittest
-from fixtures import TEST_PAYLOAD 
+from fixtures import TEST_PAYLOAD
+
 
 class TestGithubOrgClient(unittest.TestCase):
     '''Test class GithubOrgClient'''
@@ -84,6 +85,18 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             return HTTPError
         cls.get_patcher = patch('requests.get', side_effect=get_payload)
         cls.get_patcher.start()
+
+    def test_public_repos(self):
+        '''test for GithubOrgClient.public_repos'''
+        self.asserEqual(GithubOrgClient('x').public_repos(),
+                        self.expected_repos,)
+
+    def test_public_repos_with_license(self):
+        '''test public_repos with the
+        argument license="apache-2.0"'''
+        self.assertEqual(
+            GithubOrgClient('x').public_repos(license="apache-2.0"),
+            self.apache2_repos,)
 
     @classmethod
     def tearDownClass(cls) -> None:
