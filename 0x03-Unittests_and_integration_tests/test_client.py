@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-'''client.GithubOrgClient class test'''
+'''client GithubOrgClient class test'''
 from parameterized import parameterized
 import client
 from client import GithubOrgClient, get_json
