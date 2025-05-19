@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 '''client GithubOrgClient class test'''
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
+from requests import HTTPError
 import client
 from client import GithubOrgClient
 from unittest.mock import patch, Mock
 import unittest
-
+from fixtures import TEST_PAYLOAD 
 
 class TestGithubOrgClient(unittest.TestCase):
     '''Test class GithubOrgClient'''
@@ -62,10 +63,10 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, expected)
 
 
-@parameterized_class([{'org_payload': fixtures.org_payload,
-                       'repos_payload': fixtures.repos_payload,
-                       'expected_repos': fixtures.expected_repos,
-                       'apache2_repos': fixtures.apache2_repos
+@parameterized_class([{'org_payload': TEST_PAYLOAD[0][0],
+                       'repos_payload': TEST_PAYLOAD[0][1],
+                       'expected_repos': TEST_PAYLOAD[0][2],
+                       'apache2_repos': TEST_PAYLOAD[0][3],
                        }])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     '''Class that tests Integration GithubOrgClien'''
@@ -73,8 +74,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def setUpClass(cls) -> None:
         '''setting up the class'''
         payload_route = {
-            'https://api.github.com/users/x/repos': cls.repos_payload
-            'https://api.github.com/users/x': cls.org_payload
+            'https://api.github.com/users/x/repos': cls.repos_payload,
+            'https://api.github.com/users/x': cls.org_payload,
         }
 
         def get_payload(url):
