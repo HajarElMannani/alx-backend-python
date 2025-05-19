@@ -61,6 +61,29 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
 
+@parameterized_class([{'org_payload': fixtures.org_payload,
+                       'repos_payload': fixtures.repos_payload,
+                       'expected_repos': fixtures.expected_repos,
+                       'apache2_repos':fixtures.apache2_repos
+                       }])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    '''Class that tests Integration GithubOrgClien'''
+    @classmethod
+    def setUpClass(cls) -> None:
+        '''setting up the class'''
+        payload_route = {
+            'https://api.github.com/users/x/repos': cls.repos_payload
+            'https://api.github.com/users/x': cls.org_payload
+        }
 
+    def get_payload(url):
+        if url in payload_route:
+            return Mock(**{'json.return_value': payload_route[url]})
+        return HTTPError
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        '''tear down the class'''
+        cls.get_patcher.stop()
 if __name__ == "__main__":
     unittest.main()
