@@ -9,20 +9,20 @@ import unittest
 
 class TestGithubOrgClient(unittest.TestCase):
     '''Test class GithubOrgClient'''
-    @patch('client.get_json')
     @parameterized.expand([
         ('google', {'login': 'google'}),
         ('abc', {'login': 'abc'})
     ])
-    def test_org(self, org_name, expected, mock_get_json):
+    def test_org(self, org_name, expected):
         '''test the org method'''
-        mock_get_json.return_value = expected
-        thing = GithubOrgClient(org_name)
-        result = thing.org()
-        self.assertEqual(result, expected)
-        mock_get_json.assert_called_once_with(
-            "https://api.github.com/orgs/{}".format(org_name)
-        )
+        with patch('client.get_json') as mock_get_json:
+            mock_get_json.return_value = expected
+            thing = GithubOrgClient(org_name)
+            result = thing.org
+            self.assertEqual(result, expected)
+            mock_get_json.assert_called_once_with(
+                "https://api.github.com/orgs/{}".format(org_name)
+            )
 
     def test_public_repos_url(self):
         '''test GithubOrgClient._public_repos_url'''
@@ -52,7 +52,7 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_public_repos_url.return_value = 'https://api.github.com/users/abc/repos'
             result = GithubOrgClient('abc')
             res = result.public_repos() 
-            self.assertEqual(result, ['repo1', 'repo2'])
+            self.assertEqual(res, ['repo1', 'repo2'])
         mock_get_json.assert_called_once_with(
             'https://api.github.com/users/abc/repos')
 
@@ -65,3 +65,5 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(result, expected)
         
+if __name__ == "__main__":
+    unittest.main()
