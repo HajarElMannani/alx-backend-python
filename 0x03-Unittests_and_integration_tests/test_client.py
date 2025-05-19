@@ -50,7 +50,7 @@ class TestGithubOrgClient(unittest.TestCase):
         result = GithubOrgClient('abc')
         res = result.public_repos()
         self.assertEqual(res, ['repo1', 'repo2'])
-        mock_get_json.assert_call_once_with(
+        mock_get_json.assert_called_once_with(
             'https://api.github.com/orgs/x/repos')
 
     @parameterized.expand([
@@ -88,7 +88,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos(self) -> None:
         '''test for GithubOrgClient.public_repos'''
         self.assertEqual(GithubOrgClient('x').public_repos(),
-                        self.expected_repos,)
+                         self.expected_repos,)
 
     def test_public_repos_with_license(self) -> None:
         '''test public_repos with the
